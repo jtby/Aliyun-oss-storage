@@ -89,7 +89,8 @@ class AliOssAdapter extends AbstractAdapter
      * @param bool      $ssl
      * @param bool      $isCname
      * @param bool      $debug
-     * @param null      $prefix
+     * @param string    $cdnDomain
+     * @param string    $prefix
      * @param array     $options
      */
     public function __construct(
@@ -99,7 +100,7 @@ class AliOssAdapter extends AbstractAdapter
         $ssl,
         $isCname = false,
         $debug = false,
-        $cdnDomain,
+        $cdnDomain = '',
         $prefix = null,
         array $options = []
     )
