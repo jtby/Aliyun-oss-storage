@@ -41,11 +41,17 @@ class AliOssServiceProvider extends ServiceProvider
             $debug     = empty($config['debug']) ? false : $config['debug'];
 
             $endPoint  = $config['endpoint']; // 默认作为外部节点
-            $epInternal= $isCname?$cdnDomain:(empty($config['endpoint_internal']) ? $endPoint : $config['endpoint_internal']); // 内部节点
+            $epInternal= empty($config['endpoint_internal']) ? $endPoint : $config['endpoint_internal']; // 内部节点
             
-            if($debug) Log::debug('OSS config:', $config);
+            if($debug) {
+                Log::debug('OSS config:', [
+                    'config' => $config,
+                    'epInternal' => $epInternal
+                ]);
+            }
 
-            $client  = new OssClient($accessId, $accessKey, $epInternal, $isCname);
+            $client  = new OssClient($accessId, $accessKey, $epInternal, $isCname ? (empty($config['endpoint_internal']) ? true : false) : false);
+            $client->setUseSSL($ssl);
             $adapter = new AliOssAdapter($client, $bucket, $endPoint, $ssl, $isCname, $debug, $cdnDomain);
 
             //Log::debug($client);
